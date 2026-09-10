@@ -1,4 +1,6 @@
 import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+
 import 'tables/accounts.dart';
 import 'tables/bill_payments.dart';
 import 'tables/bills.dart';
@@ -40,6 +42,8 @@ part 'app_database.g.dart';
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
+
+  AppDatabase.test() : super(NativeDatabase.memory());
 
   @override
   int get schemaVersion => 1;

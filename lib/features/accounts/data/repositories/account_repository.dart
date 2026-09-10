@@ -6,6 +6,7 @@ abstract interface class AccountRepository {
     required int financialClass,
     required int accountType,
     required String currencyCode,
+    required int openingBalanceMinor,
     String? institutionName,
     String? iconCode,
     String? colorCode,

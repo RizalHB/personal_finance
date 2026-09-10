@@ -129,8 +129,8 @@ enum TransactionType {
   income(1),
   expense(2),
   transfer(3),
-  adjustment(4);
-
+  adjustment(4),
+  openingBalance(5);
   const TransactionType(this.code);
 
   final int code;

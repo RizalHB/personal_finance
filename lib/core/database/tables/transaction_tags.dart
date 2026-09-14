@@ -4,11 +4,9 @@ import 'tags.dart';
 import 'transactions.dart';
 
 class TransactionTags extends Table {
-  TextColumn get transactionId =>
-      text().references(Transactions, #id)();
+  TextColumn get transactionId => text().references(Transactions, #id)();
 
-  TextColumn get tagId =>
-      text().references(Tags, #id)();
+  TextColumn get tagId => text().references(Tags, #id)();
 
   IntColumn get createdAt => integer()();
 

@@ -3,7 +3,9 @@ import 'package:personal_finance/core/domain/transaction_type.dart';
 import 'package:personal_finance/features/transactions/application/use_cases/void_transaction.dart';
 import 'package:personal_finance/features/transactions/data/repositories/transaction_repository.dart';
 import 'package:personal_finance/features/transactions/domain/entities/transaction.dart';
+import 'package:personal_finance/features/transactions/domain/entities/transaction_split.dart';
 import 'package:personal_finance/features/transactions/domain/services/transaction_validator.dart';
+import 'package:personal_finance/features/transactions/domain/models/transaction_filter.dart';
 
 class _FakeTransactionRepository implements TransactionRepository {
   String? receivedId;
@@ -18,6 +20,20 @@ class _FakeTransactionRepository implements TransactionRepository {
     required String currencyCode,
     required String accountId,
     required String categoryId,
+    String? merchantId,
+    String? notes,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Transaction> createSplitExpense({
+    required String id,
+    required int amountMinor,
+    required int transactionDate,
+    required String currencyCode,
+    required String accountId,
+    required List<TransactionSplit> splits,
     String? merchantId,
     String? notes,
   }) {
@@ -69,6 +85,11 @@ class _FakeTransactionRepository implements TransactionRepository {
     required String fromAccountId,
     required String toAccountId,
   }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Transaction>> search(TransactionFilter filter) {
     throw UnimplementedError();
   }
 }

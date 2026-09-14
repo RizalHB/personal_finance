@@ -6,11 +6,9 @@ import 'transactions.dart';
 class BillPayments extends Table {
   TextColumn get id => text()();
 
-  TextColumn get billId =>
-      text().references(Bills, #id)();
+  TextColumn get billId => text().references(Bills, #id)();
 
-  TextColumn get transactionId =>
-      text().references(Transactions, #id)();
+  TextColumn get transactionId => text().references(Transactions, #id)();
 
   IntColumn get amountMinor => integer()();
 

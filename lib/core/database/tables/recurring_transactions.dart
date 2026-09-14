@@ -13,14 +13,11 @@ class RecurringTransactions extends Table {
 
   TextColumn get currencyCode => text()();
 
-  TextColumn get accountId =>
-      text().references(Accounts, #id)();
+  TextColumn get accountId => text().references(Accounts, #id)();
 
-  TextColumn get categoryId =>
-      text().nullable().references(Categories, #id)();
+  TextColumn get categoryId => text().nullable().references(Categories, #id)();
 
-  TextColumn get merchantId =>
-      text().nullable().references(Merchants, #id)();
+  TextColumn get merchantId => text().nullable().references(Merchants, #id)();
 
   TextColumn get notes => text().nullable()();
 

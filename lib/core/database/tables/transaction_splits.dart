@@ -6,11 +6,9 @@ import 'transactions.dart';
 class TransactionSplits extends Table {
   TextColumn get id => text()();
 
-  TextColumn get transactionId =>
-      text().references(Transactions, #id)();
+  TextColumn get transactionId => text().references(Transactions, #id)();
 
-  TextColumn get categoryId =>
-      text().references(Categories, #id)();
+  TextColumn get categoryId => text().references(Categories, #id)();
 
   IntColumn get amountMinor => integer()();
 
@@ -24,7 +22,5 @@ class TransactionSplits extends Table {
   Set<Column> get primaryKey => {id};
 
   @override
-  List<String> get customConstraints => [
-    'CHECK (amount_minor > 0)',
-  ];
+  List<String> get customConstraints => ['CHECK (amount_minor > 0)'];
 }

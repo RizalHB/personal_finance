@@ -3,10 +3,7 @@ import '../../domain/entities/transaction.dart';
 import '../../domain/services/transaction_validator.dart';
 
 class CreateTransfer {
-  const CreateTransfer(
-    this._repository,
-    this._validator,
-  );
+  const CreateTransfer(this._repository, this._validator);
 
   final TransactionRepository _repository;
   final TransactionValidator _validator;

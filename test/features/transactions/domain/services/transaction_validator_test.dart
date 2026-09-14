@@ -175,7 +175,7 @@ void main() {
       throwsArgumentError,
     );
   });
-    test('accepts a valid transfer', () {
+  test('accepts a valid transfer', () {
     const validator = TransactionValidator();
 
     expect(

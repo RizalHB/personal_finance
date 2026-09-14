@@ -121,7 +121,8 @@ class TransactionValidator {
       );
     }
   }
-    void validateTransfer({
+
+  void validateTransfer({
     required int amountMinor,
     required int transactionDate,
     required String currencyCode,
@@ -174,8 +175,47 @@ class TransactionValidator {
     }
 
     if (normalizedFromAccountId == normalizedToAccountId) {
-      throw ArgumentError(
-        'Source and destination accounts must be different.',
+      throw ArgumentError('Source and destination accounts must be different.');
+    }
+  }
+
+  void validateSplitExpense({
+    required int amountMinor,
+    required int transactionDate,
+    required String currencyCode,
+    required String accountId,
+  }) {
+    if (amountMinor <= 0) {
+      throw ArgumentError.value(
+        amountMinor,
+        'amountMinor',
+        'Must be greater than zero.',
+      );
+    }
+
+    if (transactionDate <= 0) {
+      throw ArgumentError.value(
+        transactionDate,
+        'transactionDate',
+        'Must be greater than zero.',
+      );
+    }
+
+    final normalizedCurrency = currencyCode.trim().toUpperCase();
+
+    if (normalizedCurrency.length != 3) {
+      throw ArgumentError.value(
+        currencyCode,
+        'currencyCode',
+        'Currency code must contain exactly 3 characters.',
+      );
+    }
+
+    if (accountId.trim().isEmpty) {
+      throw ArgumentError.value(
+        accountId,
+        'accountId',
+        'Account ID must not be empty.',
       );
     }
   }

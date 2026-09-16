@@ -852,4 +852,4 @@ future extensibility.
 
 The goal is not to maximize architectural complexity.
 
-The goal is to make the complexity that exists in financial software explicit, controlled, and testable.
+The goal is to make the complexity that exists in financial software explicit, controlled, and testable.    

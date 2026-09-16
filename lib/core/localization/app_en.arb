@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "transactionTypeIncome": "Income",
+  "transactionTypeExpense": "Expense",
+  "transactionTypeTransfer": "Transfer",
+  "transactionTypeAdjustment": "Adjustment",
+  "transactionTypeOpeningBalance": "Opening balance",
+  "transactionsTitle": "Transactions",
+  "transactionsInitialEmpty": "No transactions yet.",
+  "transactionsSearchEmpty": "No transactions found."
+}

@@ -1,0 +1,11 @@
+{
+  "@@locale": "id",
+  "transactionTypeIncome": "Pemasukan",
+  "transactionTypeExpense": "Pengeluaran",
+  "transactionTypeTransfer": "Transfer",
+  "transactionTypeAdjustment": "Penyesuaian",
+  "transactionTypeOpeningBalance": "Saldo awal",
+  "transactionsTitle": "Transaksi",
+  "transactionsInitialEmpty": "Belum ada transaksi.",
+  "transactionsSearchEmpty": "Tidak ada transaksi yang ditemukan."
+}

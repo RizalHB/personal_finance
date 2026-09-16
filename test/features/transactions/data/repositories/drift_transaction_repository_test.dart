@@ -3,10 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:personal_finance/core/database/app_database.dart';
 import 'package:personal_finance/core/domain/transaction_type.dart';
 import 'package:personal_finance/features/transactions/data/repositories/drift_transaction_repository.dart';
-import 'package:personal_finance/features/transactions/domain/entities/transaction.dart';
+import 'package:personal_finance/features/transactions/domain/entities/transaction.dart'
+    as domain_transaction;
 import 'package:personal_finance/features/transactions/domain/entities/transaction_split.dart'
     as domain;
 import 'package:personal_finance/features/transactions/domain/models/transaction_filter.dart';
+import 'package:personal_finance/features/transactions/presentation/models/transaction_list_item_mapper.dart';
+import 'package:personal_finance/features/transactions/presentation/models/transaction_type_presentation.dart';
 
 void main() {
   late AppDatabase database;
@@ -296,7 +299,7 @@ void main() {
     expect(result, isNotNull);
     expect(result!.id, transaction.id);
     expect(result.amountMinor, 50000);
-    expect(result.type, TransactionType.expense);
+    expect(result.type, TransactionTypePresentation.expense);
   });
 
   test('getById returns null when transaction does not exist', () async {
@@ -321,7 +324,7 @@ void main() {
       voidedAt: 1757548900000,
     );
 
-    expect(voided.status, TransactionStatus.voided);
+    expect(voided.status, domain_transaction.TransactionStatus.voided);
     expect(voided.voidedAt, 1757548900000);
 
     final entries = await (database.select(
@@ -924,14 +927,18 @@ void main() {
     );
 
     final postedResults = await repository.search(
-      const TransactionFilter(status: TransactionStatus.posted),
+      const TransactionFilter(
+        status: domain_transaction.TransactionStatus.posted,
+      ),
     );
 
     expect(postedResults, hasLength(1));
     expect(postedResults.single.id, 'search-status-posted');
 
     final voidedResults = await repository.search(
-      const TransactionFilter(status: TransactionStatus.voided),
+      const TransactionFilter(
+        status: domain_transaction.TransactionStatus.voided,
+      ),
     );
 
     expect(voidedResults, hasLength(1));
@@ -1192,5 +1199,34 @@ void main() {
 
     expect(results, hasLength(1));
     expect(results.single.id, transaction.id);
+  });
+  test('maps transaction to list item', () {
+    final transaction = domain_transaction.Transaction(
+      id: 'transaction-1',
+      type: TransactionType.expense,
+      status: domain_transaction.TransactionStatus.posted,
+      transactionDate: 1,
+      currencyCode: 'IDR',
+      amountMinor: 50000,
+      accountId: 'account-1',
+      categoryId: 'category-1',
+      merchantId: null,
+      notes: null,
+      relatedTransactionId: null,
+      recurringTransactionId: null,
+      createdAt: 1,
+      updatedAt: 1,
+      voidedAt: null,
+    );
+
+    const mapper = TransactionListItemMapper();
+
+    final result = mapper.map(transaction);
+
+    expect(result.id, 'transaction-1');
+    expect(result.type, TransactionTypePresentation.expense);
+    expect(result.currencyCode, 'IDR');
+    expect(result.amountMinor, 50000);
+    expect(result.transactionDate, 1);
   });
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:personal_finance/core/domain/transaction_type.dart';
-import 'package:personal_finance/features/transactions/domain/entities/transaction.dart';
+import 'package:personal_finance/features/transactions/presentation/models/transaction_list_item.dart';
+import 'package:personal_finance/features/transactions/presentation/models/transaction_type_presentation.dart';
 import 'package:personal_finance/features/transactions/presentation/providers/transaction_list_providers.dart';
 import 'package:personal_finance/features/transactions/presentation/screens/transaction_list_screen.dart';
 import 'package:personal_finance/features/transactions/presentation/state/transaction_list_state.dart';
 import 'package:personal_finance/features/transactions/presentation/notifiers/transaction_list_notifier.dart';
+import 'package:personal_finance/core/localization/generated/app_localizations.dart';
 
 void main() {
   group('TransactionListScreen', () {
@@ -37,22 +38,12 @@ void main() {
     });
 
     testWidgets('renders loaded transactions', (tester) async {
-      const transaction = Transaction(
+      const transaction = TransactionListItem(
         id: 'transaction-1',
-        type: TransactionType.expense,
-        status: TransactionStatus.posted,
-        transactionDate: 1000,
+        type: TransactionTypePresentation.expense,
         currencyCode: 'IDR',
         amountMinor: 50000,
-        accountId: 'account-bca',
-        categoryId: 'category-food',
-        merchantId: null,
-        notes: 'Makan',
-        relatedTransactionId: null,
-        recurringTransactionId: null,
-        createdAt: 1000,
-        updatedAt: 1000,
-        voidedAt: null,
+        transactionDate: 1000,
       );
 
       await tester.pumpWidget(
@@ -60,20 +51,38 @@ void main() {
       );
 
       expect(find.text('transaction-1'), findsOneWidget);
-      expect(find.text('IDR'), findsOneWidget);
-      expect(find.text('50000'), findsOneWidget);
+      expect(find.textContaining('Pengeluaran •'), findsOneWidget);
+      expect(find.text('Rp50.000'), findsOneWidget);
+    });
+    testWidgets('renders English localization', (tester) async {
+      await tester.pumpWidget(
+        _buildTestWidget(
+          const TransactionListInitial(),
+          locale: const Locale('en'),
+        ),
+      );
+
+      expect(find.text('No transactions yet.'), findsOneWidget);
     });
   });
 }
 
-Widget _buildTestWidget(TransactionListState state) {
+Widget _buildTestWidget(
+  TransactionListState state, {
+  Locale locale = const Locale('id'),
+}) {
   return ProviderScope(
     overrides: [
       transactionListNotifierProvider.overrideWith(
         () => _FakeTransactionListNotifier(state),
       ),
     ],
-    child: const MaterialApp(home: TransactionListScreen()),
+    child: MaterialApp(
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const TransactionListScreen(),
+    ),
   );
 }
 

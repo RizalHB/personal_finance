@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/transaction_list_item_mapper.dart';
 import '../providers/transaction_providers.dart';
 import '../../domain/models/transaction_filter.dart';
 import '../state/transaction_list_state.dart';
@@ -22,7 +23,11 @@ class TransactionListNotifier extends Notifier<TransactionListState> {
         return;
       }
 
-      state = TransactionListLoaded(transactions);
+      const mapper = TransactionListItemMapper();
+
+      final items = transactions.map(mapper.map).toList();
+
+      state = TransactionListLoaded(items);
     } catch (error) {
       state = TransactionListError(error.toString());
     }

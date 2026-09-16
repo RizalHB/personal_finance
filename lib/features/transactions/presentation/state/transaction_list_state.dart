@@ -1,4 +1,4 @@
-import '../../domain/entities/transaction.dart';
+import '../models/transaction_list_item.dart';
 
 sealed class TransactionListState {
   const TransactionListState();
@@ -15,7 +15,7 @@ final class TransactionListLoading extends TransactionListState {
 final class TransactionListLoaded extends TransactionListState {
   const TransactionListLoaded(this.transactions);
 
-  final List<Transaction> transactions;
+  final List<TransactionListItem> transactions;
 }
 
 final class TransactionListEmpty extends TransactionListState {

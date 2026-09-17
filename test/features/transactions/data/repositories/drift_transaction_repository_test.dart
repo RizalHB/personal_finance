@@ -299,7 +299,7 @@ void main() {
     expect(result, isNotNull);
     expect(result!.id, transaction.id);
     expect(result.amountMinor, 50000);
-    expect(result.type, TransactionTypePresentation.expense);
+    expect(result.type, TransactionType.expense);
   });
 
   test('getById returns null when transaction does not exist', () async {
@@ -772,7 +772,6 @@ void main() {
     expect(results, hasLength(1));
     expect(results.single.id, 'search-merchant-match');
   });
-
   test('search matches text in notes and merchant name', () async {
     await repository.createTransaction(
       id: 'search-text-notes',
@@ -1228,5 +1227,30 @@ void main() {
     expect(result.currencyCode, 'IDR');
     expect(result.amountMinor, 50000);
     expect(result.transactionDate, 1);
+  });
+  test('searchWithDetails returns transaction metadata', () async {
+    await repository.createTransaction(
+      id: 'search-details',
+      type: TransactionType.expense,
+      amountMinor: 75000,
+      transactionDate: 1000,
+      currencyCode: 'IDR',
+      accountId: 'account-bca',
+      categoryId: 'category-food',
+      merchantId: 'merchant-tokopedia',
+    );
+
+    final results = await repository.searchWithDetails(
+      const TransactionFilter(merchantId: 'merchant-tokopedia'),
+    );
+
+    expect(results, hasLength(1));
+
+    final result = results.single;
+
+    expect(result.transaction.id, 'search-details');
+    expect(result.accountName, 'BCA');
+    expect(result.categoryName, 'Food');
+    expect(result.merchantName, 'Tokopedia');
   });
 }

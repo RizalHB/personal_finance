@@ -32,4 +32,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionsSearchEmpty => 'No transactions found.';
+
+  @override
+  String get transactionsSearchHint => 'Search transactions';
+
+  @override
+  String get transactionUntitled => 'Transaction';
 }

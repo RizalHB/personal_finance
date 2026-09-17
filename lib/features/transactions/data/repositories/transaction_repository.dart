@@ -29,6 +29,7 @@ abstract interface class TransactionRepository {
 
   Stream<List<Transaction>> watchRecent({int limit = 50});
   Future<List<Transaction>> search(TransactionFilter filter);
+
   Future<Transaction> voidTransaction({
     required String id,
     required int voidedAt,

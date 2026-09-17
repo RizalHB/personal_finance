@@ -145,6 +145,18 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Tidak ada transaksi yang ditemukan.'**
   String get transactionsSearchEmpty;
+
+  /// No description provided for @transactionsSearchHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari transaksi'**
+  String get transactionsSearchHint;
+
+  /// No description provided for @transactionUntitled.
+  ///
+  /// In id, this message translates to:
+  /// **'Transaksi'**
+  String get transactionUntitled;
 }
 
 class _AppLocalizationsDelegate

@@ -7,5 +7,7 @@
   "transactionTypeOpeningBalance": "Saldo awal",
   "transactionsTitle": "Transaksi",
   "transactionsInitialEmpty": "Belum ada transaksi.",
-  "transactionsSearchEmpty": "Tidak ada transaksi yang ditemukan."
+  "transactionsSearchEmpty": "Tidak ada transaksi yang ditemukan.",
+  "transactionsSearchHint": "Cari transaksi",
+  "transactionUntitled": "Transaksi"
 }

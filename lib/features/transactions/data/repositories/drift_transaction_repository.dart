@@ -2,13 +2,16 @@ import 'package:drift/drift.dart';
 import 'package:personal_finance/core/database/app_database.dart' as database;
 import 'package:personal_finance/core/domain/transaction_type.dart';
 
+import '../../domain/models/transaction_search_result.dart';
+import 'transaction_details_search_repository.dart';
 import '../../domain/models/transaction_filter.dart';
 import '../../domain/entities/transaction.dart';
 import '../../domain/entities/transaction_split.dart';
 import '../mappers/transaction_mapper.dart';
 import 'transaction_repository.dart';
 
-class DriftTransactionRepository implements TransactionRepository {
+class DriftTransactionRepository
+    implements TransactionRepository, TransactionDetailsSearchRepository {
   DriftTransactionRepository(this._database);
 
   final database.AppDatabase _database;
@@ -587,6 +590,15 @@ class DriftTransactionRepository implements TransactionRepository {
 
   @override
   Future<List<Transaction>> search(TransactionFilter filter) async {
+    final results = await searchWithDetails(filter);
+
+    return results.map((result) => result.transaction).toList();
+  }
+
+  @override
+  Future<List<TransactionSearchResult>> searchWithDetails(
+    TransactionFilter filter,
+  ) async {
     if (filter.limit <= 0) {
       throw ArgumentError.value(
         filter.limit,
@@ -647,6 +659,10 @@ class DriftTransactionRepository implements TransactionRepository {
     final normalizedSearchQuery = filter.searchQuery?.trim();
 
     final query = _database.select(_database.transactions).join([
+      leftOuterJoin(
+        _database.accounts,
+        _database.accounts.id.equalsExp(_database.transactions.accountId),
+      ),
       leftOuterJoin(
         _database.categories,
         _database.categories.id.equalsExp(_database.transactions.categoryId),
@@ -742,9 +758,20 @@ class DriftTransactionRepository implements TransactionRepository {
 
     final rows = await query.get();
 
-    return rows
-        .map((row) => row.readTable(_database.transactions).toDomain())
-        .toList();
+    return rows.map((row) {
+      final transaction = row.readTable(_database.transactions).toDomain();
+
+      final account = row.readTableOrNull(_database.accounts);
+      final category = row.readTableOrNull(_database.categories);
+      final merchant = row.readTableOrNull(_database.merchants);
+
+      return TransactionSearchResult(
+        transaction: transaction,
+        accountName: account?.name,
+        categoryName: category?.name,
+        merchantName: merchant?.name,
+      );
+    }).toList();
   }
 
   Expression<bool> _hasSplitCategory({

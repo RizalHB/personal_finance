@@ -32,4 +32,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get transactionsSearchEmpty => 'Tidak ada transaksi yang ditemukan.';
+
+  @override
+  String get transactionsSearchHint => 'Cari transaksi';
+
+  @override
+  String get transactionUntitled => 'Transaksi';
 }

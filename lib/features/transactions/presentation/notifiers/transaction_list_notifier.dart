@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/transaction_list_providers.dart';
 import '../models/transaction_list_item_mapper.dart';
 import '../providers/transaction_providers.dart';
 import '../../domain/models/transaction_filter.dart';
@@ -15,21 +16,29 @@ class TransactionListNotifier extends Notifier<TransactionListState> {
     state = const TransactionListLoading();
 
     try {
-      final searchTransactions = ref.read(searchTransactionsProvider);
-      final transactions = await searchTransactions.execute(filter);
+      final searchTransactions = ref.read(
+        searchTransactionsWithDetailsProvider,
+      );
+      final results = await searchTransactions.execute(filter);
 
-      if (transactions.isEmpty) {
+      if (results.isEmpty) {
         state = const TransactionListEmpty();
         return;
       }
 
       const mapper = TransactionListItemMapper();
 
-      final items = transactions.map(mapper.map).toList();
+      final items = results.map(mapper.mapSearchResult).toList();
 
       state = TransactionListLoaded(items);
     } catch (error) {
       state = TransactionListError(error.toString());
     }
+  }
+
+  Future<void> searchWithCurrentFilter() async {
+    final filter = ref.read(transactionFilterNotifierProvider).toDomain();
+
+    await search(filter);
   }
 }

@@ -7,5 +7,7 @@
   "transactionTypeOpeningBalance": "Opening balance",
   "transactionsTitle": "Transactions",
   "transactionsInitialEmpty": "No transactions yet.",
-  "transactionsSearchEmpty": "No transactions found."
+  "transactionsSearchEmpty": "No transactions found.",
+  "transactionsSearchHint": "Search transactions",
+  "transactionUntitled": "Transaction"
 }

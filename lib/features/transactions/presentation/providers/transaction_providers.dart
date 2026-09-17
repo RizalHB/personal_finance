@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/use_cases/search_transactions_with_details.dart';
 import '../../../accounts/presentation/providers/account_providers.dart';
 import '../../application/transaction_dependencies.dart';
 import '../../application/use_cases/create_split_expense.dart';
@@ -52,3 +53,9 @@ final createSplitExpenseProvider = Provider<CreateSplitExpense>((ref) {
 final searchTransactionsProvider = Provider<SearchTransactions>((ref) {
   return SearchTransactions(ref.watch(transactionRepositoryProvider));
 });
+final searchTransactionsWithDetailsProvider =
+    Provider<SearchTransactionsWithDetails>((ref) {
+      return SearchTransactionsWithDetails(
+        ref.watch(transactionDetailsSearchRepositoryProvider),
+      );
+    });

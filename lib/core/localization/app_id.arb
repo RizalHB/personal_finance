@@ -9,5 +9,20 @@
   "transactionsInitialEmpty": "Belum ada transaksi.",
   "transactionsSearchEmpty": "Tidak ada transaksi yang ditemukan.",
   "transactionsSearchHint": "Cari transaksi",
-  "transactionUntitled": "Transaksi"
+  "transactionUntitled": "Transaksi",
+  "transactionFilterAll": "Semua",
+"transactionFilterIncome": "Pemasukan",
+"transactionFilterExpense": "Pengeluaran",
+"transactionFilterTransfer": "Transfer",
+"transactionFilterDateRange": "Rentang tanggal",
+"transactionFilterDateRangeSelected": "{start} – {end}",
+"@transactionFilterDateRangeSelected": {
+  "placeholders": {
+    "start": {},
+    "end": {}
+  }
+},
+"transactionFilterMinAmount": "Nominal minimum",
+"transactionFilterMaxAmount": "Nominal maksimum",
+"transactionFilterReset": "Reset filter"
 }

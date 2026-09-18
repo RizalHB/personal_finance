@@ -157,6 +157,60 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Transaksi'**
   String get transactionUntitled;
+
+  /// No description provided for @transactionFilterAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua'**
+  String get transactionFilterAll;
+
+  /// No description provided for @transactionFilterIncome.
+  ///
+  /// In id, this message translates to:
+  /// **'Pemasukan'**
+  String get transactionFilterIncome;
+
+  /// No description provided for @transactionFilterExpense.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengeluaran'**
+  String get transactionFilterExpense;
+
+  /// No description provided for @transactionFilterTransfer.
+  ///
+  /// In id, this message translates to:
+  /// **'Transfer'**
+  String get transactionFilterTransfer;
+
+  /// No description provided for @transactionFilterDateRange.
+  ///
+  /// In id, this message translates to:
+  /// **'Rentang tanggal'**
+  String get transactionFilterDateRange;
+
+  /// No description provided for @transactionFilterDateRangeSelected.
+  ///
+  /// In id, this message translates to:
+  /// **'{start} – {end}'**
+  String transactionFilterDateRangeSelected(Object start, Object end);
+
+  /// No description provided for @transactionFilterMinAmount.
+  ///
+  /// In id, this message translates to:
+  /// **'Nominal minimum'**
+  String get transactionFilterMinAmount;
+
+  /// No description provided for @transactionFilterMaxAmount.
+  ///
+  /// In id, this message translates to:
+  /// **'Nominal maksimum'**
+  String get transactionFilterMaxAmount;
+
+  /// No description provided for @transactionFilterReset.
+  ///
+  /// In id, this message translates to:
+  /// **'Reset filter'**
+  String get transactionFilterReset;
 }
 
 class _AppLocalizationsDelegate

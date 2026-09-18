@@ -38,4 +38,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionUntitled => 'Transaction';
+
+  @override
+  String get transactionFilterAll => 'All';
+
+  @override
+  String get transactionFilterIncome => 'Income';
+
+  @override
+  String get transactionFilterExpense => 'Expense';
+
+  @override
+  String get transactionFilterTransfer => 'Transfer';
+
+  @override
+  String get transactionFilterDateRange => 'Date range';
+
+  @override
+  String transactionFilterDateRangeSelected(Object start, Object end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get transactionFilterMinAmount => 'Minimum amount';
+
+  @override
+  String get transactionFilterMaxAmount => 'Maximum amount';
+
+  @override
+  String get transactionFilterReset => 'Reset filters';
 }

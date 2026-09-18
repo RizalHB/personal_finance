@@ -10,6 +10,8 @@ import 'package:personal_finance/features/transactions/presentation/screens/tran
 import 'package:personal_finance/features/transactions/presentation/state/transaction_list_state.dart';
 import 'package:personal_finance/features/transactions/presentation/notifiers/transaction_filter_notifier.dart';
 import 'package:personal_finance/features/transactions/presentation/state/transaction_filter_state.dart';
+import 'package:personal_finance/core/domain/transaction_type.dart';
+import 'package:personal_finance/features/transactions/presentation/formatters/transaction_list_formatter.dart';
 
 void main() {
   group('TransactionListScreen', () {
@@ -124,7 +126,11 @@ void main() {
         ),
       );
 
-      final searchField = find.byType(TextField);
+      final searchField = find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField &&
+            widget.decoration?.hintText == 'Cari transaksi',
+      );
 
       expect(searchField, findsOneWidget);
 
@@ -133,6 +139,87 @@ void main() {
       await tester.testTextInput.receiveAction(TextInputAction.search);
 
       expect(filterNotifier.submittedQuery, 'Tokopedia');
+    });
+    testWidgets('renders selected date range', (tester) async {
+      final filterNotifier = _FakeTransactionFilterNotifier(
+        initialState: TransactionFilterState(
+          fromDate: DateTime(2026, 9, 1).millisecondsSinceEpoch,
+          toDate: DateTime(2026, 9, 30).millisecondsSinceEpoch,
+        ),
+      );
+
+      await tester.pumpWidget(
+        _buildTestWidget(
+          const TransactionListInitial(),
+          filterNotifier: filterNotifier,
+        ),
+      );
+
+      final localizations = AppLocalizations.of(
+        tester.element(find.byType(TransactionListScreen)),
+      )!;
+
+      const formatter = TransactionListFormatter();
+
+      final start = formatter.formatDate(
+        DateTime(2026, 9, 1).millisecondsSinceEpoch,
+        locale: localizations.localeName,
+      );
+
+      final end = formatter.formatDate(
+        DateTime(2026, 9, 30).millisecondsSinceEpoch,
+        locale: localizations.localeName,
+      );
+
+      expect(
+        find.text(localizations.transactionFilterDateRangeSelected(start, end)),
+        findsOneWidget,
+      );
+    });
+    testWidgets('resets filters and refreshes transactions', (tester) async {
+      final filterNotifier = _FakeTransactionFilterNotifier(
+        initialState: TransactionFilterState(
+          searchQuery: 'Tokopedia',
+          fromDate: DateTime(2026, 9, 1).millisecondsSinceEpoch,
+          toDate: DateTime(2026, 9, 30).millisecondsSinceEpoch,
+          minAmountMinor: 10000,
+          maxAmountMinor: 500000,
+        ),
+      );
+
+      final listNotifier = _FakeTransactionListNotifier(
+        const TransactionListInitial(),
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            transactionListNotifierProvider.overrideWith(() => listNotifier),
+            transactionFilterNotifierProvider.overrideWith(
+              () => filterNotifier,
+            ),
+          ],
+          child: const MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: TransactionListScreen(),
+          ),
+        ),
+      );
+
+      final localizations = AppLocalizations.of(
+        tester.element(find.byType(TransactionListScreen)),
+      )!;
+
+      final resetButton = find.text(localizations.transactionFilterReset);
+
+      expect(resetButton, findsOneWidget);
+
+      await tester.tap(resetButton);
+      await tester.pump();
+
+      expect(filterNotifier.resetCalled, isTrue);
+      expect(listNotifier.searchCalled, isTrue);
     });
   });
 }
@@ -164,25 +251,47 @@ class _FakeTransactionListNotifier extends TransactionListNotifier {
 
   final TransactionListState _state;
 
+  bool searchCalled = false;
+
   @override
   TransactionListState build() {
     return _state;
   }
 
   @override
-  Future<void> searchWithCurrentFilter() async {}
+  Future<void> searchWithCurrentFilter() async {
+    searchCalled = true;
+  }
 }
 
 class _FakeTransactionFilterNotifier extends TransactionFilterNotifier {
+  _FakeTransactionFilterNotifier({
+    this.initialState = const TransactionFilterState(),
+  });
+
+  final TransactionFilterState initialState;
+
   String? submittedQuery;
+  TransactionType? selectedType;
+  bool resetCalled = false;
 
   @override
   TransactionFilterState build() {
-    return const TransactionFilterState();
+    return initialState;
   }
 
   @override
   void setSearchQuery(String query) {
     submittedQuery = query;
+  }
+
+  @override
+  void setType(TransactionType? type) {
+    selectedType = type;
+  }
+
+  @override
+  void reset() {
+    resetCalled = true;
   }
 }

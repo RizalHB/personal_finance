@@ -9,5 +9,20 @@
   "transactionsInitialEmpty": "No transactions yet.",
   "transactionsSearchEmpty": "No transactions found.",
   "transactionsSearchHint": "Search transactions",
-  "transactionUntitled": "Transaction"
+  "transactionUntitled": "Transaction",
+  "transactionFilterAll": "All",
+  "transactionFilterIncome": "Income",
+  "transactionFilterExpense": "Expense",
+  "transactionFilterTransfer": "Transfer",
+  "transactionFilterDateRange": "Date range",
+"transactionFilterDateRangeSelected": "{start} – {end}",
+"@transactionFilterDateRangeSelected": {
+  "placeholders": {
+    "start": {},
+    "end": {}
+  }
+},
+"transactionFilterMinAmount": "Minimum amount",
+"transactionFilterMaxAmount": "Maximum amount",
+"transactionFilterReset": "Reset filters"
 }

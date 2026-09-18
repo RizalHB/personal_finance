@@ -38,4 +38,33 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get transactionUntitled => 'Transaksi';
+
+  @override
+  String get transactionFilterAll => 'Semua';
+
+  @override
+  String get transactionFilterIncome => 'Pemasukan';
+
+  @override
+  String get transactionFilterExpense => 'Pengeluaran';
+
+  @override
+  String get transactionFilterTransfer => 'Transfer';
+
+  @override
+  String get transactionFilterDateRange => 'Rentang tanggal';
+
+  @override
+  String transactionFilterDateRangeSelected(Object start, Object end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get transactionFilterMinAmount => 'Nominal minimum';
+
+  @override
+  String get transactionFilterMaxAmount => 'Nominal maksimum';
+
+  @override
+  String get transactionFilterReset => 'Reset filter';
 }

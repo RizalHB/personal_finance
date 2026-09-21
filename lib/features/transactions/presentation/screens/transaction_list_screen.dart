@@ -17,16 +17,22 @@ class TransactionListScreen extends ConsumerStatefulWidget {
 
 class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
   late final TextEditingController _searchController;
+  late final TextEditingController _minAmountController;
+  late final TextEditingController _maxAmountController;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _minAmountController = TextEditingController();
+    _maxAmountController = TextEditingController();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _minAmountController.dispose();
+    _maxAmountController.dispose();
     super.dispose();
   }
 
@@ -35,6 +41,8 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
     final state = ref.watch(transactionListNotifierProvider);
     final localizations = AppLocalizations.of(context)!;
     final filter = ref.watch(transactionFilterNotifierProvider);
+    _minAmountController.text = filter.minAmountMinor?.toString() ?? '';
+    _maxAmountController.text = filter.maxAmountMinor?.toString() ?? '';
     const formatter = TransactionListFormatter();
 
     return Scaffold(
@@ -150,6 +158,7 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _minAmountController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: localizations.transactionFilterMinAmount,
@@ -174,6 +183,7 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextField(
+                    controller: _maxAmountController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: localizations.transactionFilterMaxAmount,
@@ -207,6 +217,8 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
                 label: Text(localizations.transactionFilterReset),
                 onPressed: () {
                   _searchController.clear();
+                  _minAmountController.clear();
+                  _maxAmountController.clear();
 
                   ref.read(transactionFilterNotifierProvider.notifier).reset();
 

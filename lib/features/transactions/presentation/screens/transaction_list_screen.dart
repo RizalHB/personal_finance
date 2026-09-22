@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_finance/core/localization/generated/app_localizations.dart';
 
+import 'transaction_detail_screen.dart';
 import '../formatters/transaction_list_formatter.dart';
 import '../models/transaction_type_localizer.dart';
 import '../providers/transaction_list_providers.dart';
@@ -246,6 +247,15 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
                   const typeLocalizer = TransactionTypeLocalizer();
 
                   return ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => TransactionDetailScreen(
+                            transactionId: transaction.id,
+                          ),
+                        ),
+                      );
+                    },
                     title: Text(
                       transaction.merchantName ??
                           transaction.categoryName ??

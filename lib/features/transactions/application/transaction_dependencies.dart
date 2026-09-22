@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/repositories/transaction_details_repository.dart';
+import 'use_cases/get_transaction_by_id_with_details.dart';
+import 'get_transaction_by_id.dart';
 import '../data/repositories/transaction_details_search_repository.dart';
 import '../domain/services/transaction_split_validator.dart';
 import '../../accounts/presentation/providers/account_providers.dart';
@@ -20,6 +23,12 @@ final transactionDetailsSearchRepositoryProvider =
 
       return repository as TransactionDetailsSearchRepository;
     });
+final transactionDetailsRepositoryProvider =
+    Provider<TransactionDetailsRepository>((ref) {
+      final repository = ref.watch(transactionRepositoryProvider);
+
+      return repository as TransactionDetailsRepository;
+    });
 final transactionValidatorProvider = Provider<TransactionValidator>((ref) {
   return TransactionValidator();
 });
@@ -35,3 +44,12 @@ final transactionSplitRepositoryProvider = Provider<TransactionSplitRepository>(
     return DriftTransactionSplitRepository(database);
   },
 );
+final getTransactionByIdProvider = Provider<GetTransactionById>((ref) {
+  return GetTransactionById(ref.watch(transactionRepositoryProvider));
+});
+final getTransactionByIdWithDetailsProvider =
+    Provider<GetTransactionByIdWithDetails>((ref) {
+      return GetTransactionByIdWithDetails(
+        ref.watch(transactionDetailsRepositoryProvider),
+      );
+    });

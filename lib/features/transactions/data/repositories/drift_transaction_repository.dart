@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:personal_finance/core/database/app_database.dart' as database;
 import 'package:personal_finance/core/domain/transaction_type.dart';
 
+import 'transaction_details_repository.dart';
 import '../../domain/models/transaction_search_result.dart';
 import 'transaction_details_search_repository.dart';
 import '../../domain/models/transaction_filter.dart';
@@ -11,7 +12,10 @@ import '../mappers/transaction_mapper.dart';
 import 'transaction_repository.dart';
 
 class DriftTransactionRepository
-    implements TransactionRepository, TransactionDetailsSearchRepository {
+    implements
+        TransactionRepository,
+        TransactionDetailsSearchRepository,
+        TransactionDetailsRepository {
   DriftTransactionRepository(this._database);
 
   final database.AppDatabase _database;
@@ -390,6 +394,42 @@ class DriftTransactionRepository
     )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
 
     return row?.toDomain();
+  }
+
+  @override
+  Future<TransactionSearchResult?> getByIdWithDetails(String id) async {
+    final query = _database.select(_database.transactions).join([
+      leftOuterJoin(
+        _database.accounts,
+        _database.accounts.id.equalsExp(_database.transactions.accountId),
+      ),
+      leftOuterJoin(
+        _database.categories,
+        _database.categories.id.equalsExp(_database.transactions.categoryId),
+      ),
+      leftOuterJoin(
+        _database.merchants,
+        _database.merchants.id.equalsExp(_database.transactions.merchantId),
+      ),
+    ])..where(_database.transactions.id.equals(id));
+
+    final row = await query.getSingleOrNull();
+
+    if (row == null) {
+      return null;
+    }
+
+    final transaction = row.readTable(_database.transactions).toDomain();
+    final account = row.readTableOrNull(_database.accounts);
+    final category = row.readTableOrNull(_database.categories);
+    final merchant = row.readTableOrNull(_database.merchants);
+
+    return TransactionSearchResult(
+      transaction: transaction,
+      accountName: account?.name,
+      categoryName: category?.name,
+      merchantName: merchant?.name,
+    );
   }
 
   @override

@@ -67,4 +67,31 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get transactionFilterReset => 'Reset filter';
+
+  @override
+  String get transactionDetailId => 'ID transaksi';
+
+  @override
+  String get transactionDetailType => 'Jenis';
+
+  @override
+  String get transactionDetailStatus => 'Status';
+
+  @override
+  String get transactionStatusPosted => 'Tercatat';
+
+  @override
+  String get transactionStatusVoided => 'Dibatalkan';
+
+  @override
+  String get transactionDetailMerchant => 'Merchant';
+
+  @override
+  String get transactionDetailCategory => 'Kategori';
+
+  @override
+  String get transactionDetailAccount => 'Akun';
+
+  @override
+  String get transactionDetailNotes => 'Catatan';
 }

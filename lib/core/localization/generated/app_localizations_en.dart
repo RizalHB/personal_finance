@@ -67,4 +67,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transactionFilterReset => 'Reset filters';
+
+  @override
+  String get transactionDetailId => 'Transaction ID';
+
+  @override
+  String get transactionDetailType => 'Type';
+
+  @override
+  String get transactionDetailStatus => 'Status';
+
+  @override
+  String get transactionStatusPosted => 'Posted';
+
+  @override
+  String get transactionStatusVoided => 'Voided';
+
+  @override
+  String get transactionDetailMerchant => 'Merchant';
+
+  @override
+  String get transactionDetailCategory => 'Category';
+
+  @override
+  String get transactionDetailAccount => 'Account';
+
+  @override
+  String get transactionDetailNotes => 'Notes';
 }

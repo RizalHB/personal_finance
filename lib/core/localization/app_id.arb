@@ -24,5 +24,14 @@
 },
 "transactionFilterMinAmount": "Nominal minimum",
 "transactionFilterMaxAmount": "Nominal maksimum",
-"transactionFilterReset": "Reset filter"
+"transactionFilterReset": "Reset filter",
+"transactionDetailId": "ID transaksi",
+"transactionDetailType": "Jenis",
+"transactionDetailStatus": "Status",
+"transactionStatusPosted": "Tercatat",
+"transactionStatusVoided": "Dibatalkan",
+"transactionDetailMerchant": "Merchant",
+"transactionDetailCategory": "Kategori",
+"transactionDetailAccount": "Akun",
+"transactionDetailNotes": "Catatan"
 }

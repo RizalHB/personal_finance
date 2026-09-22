@@ -211,6 +211,60 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Reset filter'**
   String get transactionFilterReset;
+
+  /// No description provided for @transactionDetailId.
+  ///
+  /// In id, this message translates to:
+  /// **'ID transaksi'**
+  String get transactionDetailId;
+
+  /// No description provided for @transactionDetailType.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis'**
+  String get transactionDetailType;
+
+  /// No description provided for @transactionDetailStatus.
+  ///
+  /// In id, this message translates to:
+  /// **'Status'**
+  String get transactionDetailStatus;
+
+  /// No description provided for @transactionStatusPosted.
+  ///
+  /// In id, this message translates to:
+  /// **'Tercatat'**
+  String get transactionStatusPosted;
+
+  /// No description provided for @transactionStatusVoided.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibatalkan'**
+  String get transactionStatusVoided;
+
+  /// No description provided for @transactionDetailMerchant.
+  ///
+  /// In id, this message translates to:
+  /// **'Merchant'**
+  String get transactionDetailMerchant;
+
+  /// No description provided for @transactionDetailCategory.
+  ///
+  /// In id, this message translates to:
+  /// **'Kategori'**
+  String get transactionDetailCategory;
+
+  /// No description provided for @transactionDetailAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun'**
+  String get transactionDetailAccount;
+
+  /// No description provided for @transactionDetailNotes.
+  ///
+  /// In id, this message translates to:
+  /// **'Catatan'**
+  String get transactionDetailNotes;
 }
 
 class _AppLocalizationsDelegate

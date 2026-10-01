@@ -10,6 +10,8 @@ import 'package:personal_finance/features/transactions/domain/entities/transacti
 import 'package:personal_finance/features/transactions/domain/models/transaction_filter.dart';
 import 'package:personal_finance/features/transactions/presentation/providers/transaction_detail_providers.dart';
 import 'package:personal_finance/features/transactions/presentation/state/transaction_detail_state.dart';
+import 'package:personal_finance/features/transactions/data/repositories/transaction_details_repository.dart';
+import 'package:personal_finance/features/transactions/domain/models/transaction_search_result.dart';
 
 void main() {
   group('TransactionDetailNotifier', () {
@@ -102,7 +104,8 @@ Transaction _transaction() {
   );
 }
 
-class _FakeTransactionRepository implements TransactionRepository {
+class _FakeTransactionRepository
+    implements TransactionRepository, TransactionDetailsRepository {
   _FakeTransactionRepository({this.transaction, this.error});
 
   final Transaction? transaction;
@@ -115,6 +118,21 @@ class _FakeTransactionRepository implements TransactionRepository {
     }
 
     return transaction;
+  }
+
+  @override
+  Future<TransactionSearchResult?> getByIdWithDetails(String id) async {
+    if (error != null) {
+      throw error!;
+    }
+
+    final transaction = await getById(id);
+
+    if (transaction == null) {
+      return null;
+    }
+
+    return TransactionSearchResult(transaction: transaction);
   }
 
   @override

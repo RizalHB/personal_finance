@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:personal_finance/core/database/app_database.dart' as database;
 import 'package:personal_finance/core/domain/transaction_type.dart';
 
+import '../writers/drift_transaction_writer.dart';
 import 'transaction_details_repository.dart';
 import '../../domain/models/transaction_search_result.dart';
 import 'transaction_details_search_repository.dart';
@@ -32,7 +33,6 @@ class DriftTransactionRepository
 
   static const int _assetFinancialClass = 1;
 
-  static const int _incomeCategoryType = 1;
   static const int _expenseCategoryType = 2;
 
   String _escapeLikePattern(String value) {
@@ -54,105 +54,22 @@ class DriftTransactionRepository
     String? merchantId,
     String? notes,
   }) async {
-    if (type != TransactionType.income && type != TransactionType.expense) {
-      throw ArgumentError(
-        'Only income and expense transactions are supported '
-        'by this operation.',
-      );
-    }
-
     final now = DateTime.now().millisecondsSinceEpoch;
 
     await _database.transaction(() async {
-      final account = await (_database.select(
-        _database.accounts,
-      )..where((tbl) => tbl.id.equals(accountId))).getSingleOrNull();
-
-      if (account == null) {
-        throw StateError('Account not found: $accountId');
-      }
-
-      if (account.status != _activeStatus) {
-        throw StateError('Account is not active: $accountId');
-      }
-
-      if (account.currencyCode != currencyCode) {
-        throw StateError(
-          'Transaction currency does not match account currency.',
-        );
-      }
-
-      final category = await (_database.select(
-        _database.categories,
-      )..where((tbl) => tbl.id.equals(categoryId))).getSingleOrNull();
-
-      if (category == null) {
-        throw StateError('Category not found: $categoryId');
-      }
-
-      if (category.status != _activeStatus) {
-        throw StateError('Category is not active: $categoryId');
-      }
-
-      final expectedCategoryType = type == TransactionType.income
-          ? _incomeCategoryType
-          : _expenseCategoryType;
-
-      if (category.categoryType != expectedCategoryType) {
-        throw StateError('Category type does not match transaction type.');
-      }
-
-      await _database
-          .into(_database.transactions)
-          .insert(
-            database.TransactionsCompanion.insert(
-              id: id,
-              transactionType: type.code,
-              status: _postedStatus,
-              transactionDate: transactionDate,
-              currencyCode: currencyCode,
-              amountMinor: amountMinor,
-              accountId: Value(accountId),
-              categoryId: Value(categoryId),
-              merchantId: Value(merchantId),
-              notes: Value(notes),
-              relatedTransactionId: const Value(null),
-              recurringTransactionId: const Value(null),
-              createdAt: now,
-              updatedAt: now,
-              voidedAt: const Value(null),
-            ),
-          );
-
-      final accountIsDebit = type == TransactionType.income;
-
-      await _database
-          .into(_database.ledgerEntries)
-          .insert(
-            database.LedgerEntriesCompanion.insert(
-              id: _generateLedgerEntryId(id, 'account'),
-              transactionId: id,
-              ledgerAccountId: account.ledgerAccountId,
-              entrySide: accountIsDebit ? _debitSide : _creditSide,
-              amountMinor: amountMinor,
-              currencyCode: currencyCode,
-              createdAt: now,
-            ),
-          );
-
-      await _database
-          .into(_database.ledgerEntries)
-          .insert(
-            database.LedgerEntriesCompanion.insert(
-              id: _generateLedgerEntryId(id, 'category'),
-              transactionId: id,
-              ledgerAccountId: category.ledgerAccountId,
-              entrySide: accountIsDebit ? _creditSide : _debitSide,
-              amountMinor: amountMinor,
-              currencyCode: currencyCode,
-              createdAt: now,
-            ),
-          );
+      await DriftTransactionWriter(_database).write(
+        id: id,
+        type: type,
+        amountMinor: amountMinor,
+        transactionDate: transactionDate,
+        currencyCode: currencyCode,
+        accountId: accountId,
+        categoryId: categoryId,
+        merchantId: merchantId,
+        notes: notes,
+        recurringTransactionId: null,
+        createdAt: now,
+      );
     });
 
     final transaction = await (_database.select(

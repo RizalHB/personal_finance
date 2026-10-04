@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_finance/core/localization/generated/app_localizations.dart';
-import 'package:personal_finance/features/accounts/presentation/pages/accounts_page.dart';
+
+import 'app_shell.dart';
 
 class PersonalFinanceApp extends StatelessWidget {
   const PersonalFinanceApp({super.key});
@@ -15,7 +16,7 @@ class PersonalFinanceApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const AccountsPage(),
+      home: const AppShell(),
     );
   }
 }

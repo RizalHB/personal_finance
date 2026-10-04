@@ -87,6 +87,18 @@ void main() {
     await expectSelectedIndex(4);
     expect(find.text('More Page'), findsOneWidget);
   });
+
+  testWidgets('More page contains secondary navigation entries', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: MorePage()));
+
+    await tester.pump();
+
+    expect(find.text('Accounts'), findsOneWidget);
+    expect(find.text('Recurring Transactions'), findsOneWidget);
+    expect(find.text('Reports'), findsOneWidget);
+  });
 }
 
 class _TestPage extends StatelessWidget {

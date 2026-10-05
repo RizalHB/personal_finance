@@ -1,4 +1,4 @@
-#Engineering highlights
+##Engineering highlights
 
 Feature-oriented architecture
 Drift persistence with SQLite

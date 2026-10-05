@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/bill_payment_list_tile.dart';
 import '../../application/bill_dependencies.dart';
 import '../../domain/entities/bill.dart';
 import '../notifiers/bill_payment_notifier.dart';
+import '../widgets/bill_payment_list_tile.dart';
 
 final billDetailProvider = FutureProvider.family<Bill, String>((ref, billId) {
   return ref.read(getBillProvider).execute(billId);
@@ -42,63 +42,19 @@ class BillDetailPage extends ConsumerWidget {
                 FilledButton.icon(
                   onPressed: () async {
                     final messenger = ScaffoldMessenger.of(context);
-                    final amountController = TextEditingController(
-                      text: bill.amountMinor?.toString() ?? '',
+
+                    final amountMinor = await showDialog<int>(
+                      context: context,
+                      builder: (dialogContext) {
+                        return const _RecordPaymentDialog();
+                      },
                     );
 
+                    if (!context.mounted || amountMinor == null) {
+                      return;
+                    }
+
                     try {
-                      final shouldSave = await showDialog<bool>(
-                        context: context,
-                        builder: (dialogContext) {
-                          return AlertDialog(
-                            title: const Text('Record Payment'),
-                            content: TextField(
-                              key: const Key('bill-payment-amount'),
-                              controller: amountController,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                labelText: 'Payment Amount',
-                                prefixText: 'Rp',
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop(false);
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              FilledButton(
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop(true);
-                                },
-                                child: const Text('Save'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (!context.mounted || shouldSave != true) {
-                        return;
-                      }
-
-                      final amountMinor = int.tryParse(
-                        amountController.text.trim(),
-                      );
-
-                      if (amountMinor == null || amountMinor <= 0) {
-                        messenger.showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Payment amount must be greater than zero.',
-                            ),
-                          ),
-                        );
-                        return;
-                      }
-
                       await ref
                           .read(recordBillPaymentProvider)
                           .execute(
@@ -134,8 +90,6 @@ class BillDetailPage extends ConsumerWidget {
                           content: Text('Failed to record payment.\n$error'),
                         ),
                       );
-                    } finally {
-                      amountController.dispose();
                     }
                   },
                   icon: const Icon(Icons.payment),
@@ -175,6 +129,71 @@ class BillDetailPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RecordPaymentDialog extends StatefulWidget {
+  const _RecordPaymentDialog();
+
+  @override
+  State<_RecordPaymentDialog> createState() => _RecordPaymentDialogState();
+}
+
+class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
+  late final TextEditingController _amountController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _amountController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final amountMinor = int.tryParse(_amountController.text.trim());
+
+    if (amountMinor == null || amountMinor <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Payment amount must be greater than zero.'),
+        ),
+      );
+      return;
+    }
+
+    Navigator.of(context).pop(amountMinor);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Record Payment'),
+      content: TextField(
+        key: const Key('bill-payment-amount'),
+        controller: _amountController,
+        keyboardType: TextInputType.number,
+        decoration: const InputDecoration(
+          labelText: 'Payment Amount',
+          prefixText: 'Rp',
+          border: OutlineInputBorder(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        FilledButton(onPressed: _save, child: const Text('Save')),
+      ],
     );
   }
 }

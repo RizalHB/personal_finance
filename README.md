@@ -1,22 +1,30 @@
-##Engineering highlights
+🏗️ Engineering Highlights
 
-Feature-oriented architecture
-Drift persistence with SQLite
-Repository/use-case separation
-Riverpod state management
-Transaction splitting
-Budget vs actual reporting
+Feature-oriented architecture for modular, maintainable code
+
+Drift + SQLite for local persistence
+
+Repository / use-case separation for clean domain boundaries
+
+Riverpod for predictable state management
+
+Transaction splitting for flexible expense tracking
+
+Budget vs. actual reporting for financial insights
+
 Recurring transaction scheduling
-Bill/payment workflow
-Automated test suite
 
-#Verification
+Bill & payment workflow
 
-dart analyze — clean
-flutter test — 286 tests passing
-Android debug APK builds successfully
+Automated test suite covering core application behavior
 
-#Known limitations
+✅ Verification
+Check	Status
+dart analyze	✅ Clean
+flutter test	✅ 286 tests passing
+Android debug APK	✅ Builds successfully
+⚠️ Known Limitations
 
-Final physical-device UI validation exposed unfinished product/integration work.
-Not presented as production-ready.
+Final physical-device UI validation revealed unfinished product and integration work.
+
+This project is not presented as production-ready.

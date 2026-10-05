@@ -1,17 +1,22 @@
-# personal_finance
+Engineering highlights
 
-A new Flutter project.
+Feature-oriented architecture
+Drift persistence with SQLite
+Repository/use-case separation
+Riverpod state management
+Transaction splitting
+Budget vs actual reporting
+Recurring transaction scheduling
+Bill/payment workflow
+Automated test suite
 
-## Getting Started
+Verification
 
-This project is a starting point for a Flutter application.
+dart analyze — clean
+flutter test — 286 tests passing
+Android debug APK builds successfully
 
-A few resources to get you started if this is your first Flutter project:
+Known limitations
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Final physical-device UI validation exposed unfinished product/integration work.
+Not presented as production-ready.

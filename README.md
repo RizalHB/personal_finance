@@ -1,4 +1,4 @@
-Engineering highlights
+#Engineering highlights
 
 Feature-oriented architecture
 Drift persistence with SQLite
@@ -10,13 +10,13 @@ Recurring transaction scheduling
 Bill/payment workflow
 Automated test suite
 
-Verification
+#Verification
 
 dart analyze — clean
 flutter test — 286 tests passing
 Android debug APK builds successfully
 
-Known limitations
+#Known limitations
 
 Final physical-device UI validation exposed unfinished product/integration work.
 Not presented as production-ready.
